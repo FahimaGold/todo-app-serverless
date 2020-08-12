@@ -10,7 +10,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
@@ -18,7 +18,7 @@ provider:
     TODOS_TABLE: Todos-${self:provider.stage}
     AUTH_0_SECRET: dkhCJ3USZZKVIDnarFeX_5rxng-Td-zKifVYISgUWN-RdKVcDc5yMiIRus4a0Cqj
     CREATED_AT_INDEX: CreatedAtIndex
-    IMAGES_S3_BUCKET: serverless-udagram-images-${self:provider.stage}
+    IMAGES_S3_BUCKET: fahima-serverless-udagram-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     
 functions:
