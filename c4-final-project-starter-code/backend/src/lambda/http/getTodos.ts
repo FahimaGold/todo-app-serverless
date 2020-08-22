@@ -1,14 +1,16 @@
 import 'source-map-support/register'
 import * as AWS  from 'aws-sdk'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
-import { getUserId } from '../utils'
+
 
 const docClient = new AWS.DynamoDB.DocumentClient()
 const todosTable = process.env.TODOS_TABLE
 const createdAtIndex = process.env.CREATED_AT_INDEX
+
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // TODO: Get all TODO items for a current user
-  const userId = getUserId(event)
+  
+  let userId = event.requestContext.authorizer['principalId'];
   console.log('Processing event: ' , event)
   const result  =  await docClient.query({
     TableName:todosTable,
@@ -16,7 +18,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     KeyConditionExpression:'userId = :userId',
     ExpressionAttributeValues:{
       ':userId':userId
-    }
+    },
   }).promise()
 
   
@@ -29,7 +31,7 @@ return {
     'Access-Control-Allow-Credentials': true
   },
   body: JSON.stringify({
-    items:items
+    items
   })
 }
 }
